@@ -11,6 +11,14 @@ import vuongdx.search.ISolver;
 
 public class FSOClustering implements ISolver {
 
+    public static  void main(String[] args) {
+        FSOClustering s = readInputAndCreateSolverInstance("./data/gfso_50_1");
+    }
+
+    public static FSOClustering readInputAndCreateSolverInstance(String file) {
+        
+    }
+
     private int NFSO;
     private int[] x;
     private int[] y;
@@ -123,7 +131,8 @@ public class FSOClustering implements ISolver {
                 IFunction sqrYDelta = new FuncMult(yDelta, yDelta);
                 IFunction sqrDistance = new FuncPlus(sqrXDelta, sqrYDelta);
                 IConstraint distanceConstraint = new LessOrEqual(sqrDistance, R * R);
-                cs.post(new Implicate(hEqualOne, distanceConstraint));
+                VarIntLS tmpU = new VarIntLS(lsm, u, u);
+                cs.post(new Implicate(new LessThan(tmpU, NHAP), new Implicate(hEqualOne, distanceConstraint)));
             }
         }
 
